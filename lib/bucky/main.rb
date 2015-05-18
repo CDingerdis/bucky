@@ -1,6 +1,6 @@
 require 'httparty'
 
-module Buckaroo
+module Bucky
   class Main
 
     def initialize(params = {})
@@ -8,7 +8,7 @@ module Buckaroo
     end
 
     def post_transaction_request
-      HTTParty.post(Buckaroo::Config.endpoint, body: params_with_signature)
+      HTTParty.post(Bucky::Config.endpoint, body: params_with_signature)
     end
 
     def params_with_signature
@@ -19,18 +19,18 @@ module Buckaroo
 
     def transaction_parameters
       {
-        brq_websitekey:     Buckaroo::Config.websitekey,
-        brq_culture:        Buckaroo::Config.culture
+        brq_websitekey:     Bucky::Config.websitekey,
+        brq_culture:        Bucky::Config.culture
       }.merge(@params)
     end
 
 
     def endpoint
-      Buckaroo::Config.endpoint
+      Bucky::Config.endpoint
     end
 
     def signature
-      Buckaroo::Signature.new(transaction_parameters).to_s
+      Bucky::Signature.new(transaction_parameters).to_s
     end
 
   end

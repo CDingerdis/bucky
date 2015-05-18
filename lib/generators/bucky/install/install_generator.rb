@@ -6,7 +6,7 @@ module Bucky
       source_root File.expand_path('../templates', __FILE__)
 
       def initialize_bucky_configuration_template
-        if yes?("Generate a new Buckaroo::Config template?")
+        if yes?("Generate a new Bucky::Config template?")
           if File.exist? "config/initializers/buckaroo.rb"
             puts "config/initializers/buckaroo.rb already exists. Rename or manually copy the file from templates"
           else

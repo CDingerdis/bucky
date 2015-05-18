@@ -49,14 +49,14 @@ Assuming you are calling your model `Transaction` you can run
 
 ### Manual setup
 
-Create an initializer in app/initializers/ which calls Buckaroo::Config.configure.
+Create an initializer in app/initializers/ which calls Bucky::Config.configure.
 Websitekey and Secret are two variables that need to be present.
 You can find these in your Buckaroo dashboard.
 
 ```initializers/buckaroo.rb```
 
 ``` ruby
-Buckaroo::Config.configure(
+Bucky::Config.configure(
   endpoint: "https://testcheckout.buckaroo.nl/nvp/",
   secret: "very-secret",
   websitekey: "very-secure"
@@ -66,20 +66,20 @@ Buckaroo::Config.configure(
 You might want to create separate configurations for different environments
 ``` ruby
 if Rails.env.production?
-  Buckaroo::Config.configure(
+  Bucky::Config.configure(
       endpoint: "https://checkout.buckaroo.nl/nvp/",
       secret: "very-secret-production",
       websitekey: "very-secure-production"
       )
 elsif Rails.env.development?
 
-  Buckaroo::Config.configure(
+  Bucky::Config.configure(
       endpoint: "https://testcheckout.buckaroo.nl/nvp/",
       secret: "very-secret",
       websitekey: "very-secure"
       )
 else
-  Buckaroo::Config.configure(
+  Bucky::Config.configure(
       endpoint: "https://testcheckout.buckaroo.nl/nvp/",
       secret: "very-secret-test",
       websitekey: "very-secure-test"
@@ -93,7 +93,7 @@ Your next step is to create a transaction request which will return a raw respon
 
 ```ruby
     def do_it_yourself
-    provider = Buckaroo::Main.new(transaction_request_parameters)
+    provider = Bucky::Main.new(transaction_request_parameters)
     raw_response = provider.post_transaction_request
     end
 
@@ -121,13 +121,13 @@ This returns:
 Or let Bucky handle the parsing for you:
 ``` ruby
     def let_bucky_do_it
-      provider = Buckaroo::Main.new(params)
+      provider = Bucky::Main.new(params)
       raw_response = provider.post_transaction_request
-      parsed_response = Buckaroo::Response.new(raw_response)
+      parsed_response = Bucky::Response.new(raw_response)
     end
 ```
 
-`Buckaroo::Response` parses the response and adds some convenience methods.
+`Bucky::Response` parses the response and adds some convenience methods.
 `parsed_response.redirect_url`
 Returns the url which the user (person that's paying) needs to be redirected to.
 
@@ -141,10 +141,10 @@ Just like the regular status except Bucky matched the human readable string from
 ### Callbacks
 
 Once the user completes a transaction, Buckaroo will callback your app which can be success, reject, failure or cancel. You need to validate the response and check the status of the payment.
-Bucky provides `Buckaroo::Signature.valid?(params)` to check if the signature returned by Buckaroo actually matches the one Bucky calculates. Check out `Signature.rb` on how this gets done.
+Bucky provides `Bucky::Signature.valid?(params)` to check if the signature returned by Buckaroo actually matches the one Bucky calculates. Check out `Signature.rb` on how this gets done.
 
 If the signature is correct your app needs to update/cancel the transaction/payment. Although Buckaroo posts to callback_success it's easy to double check the response for status success.
-`Buckaroo::PaymentResponse.new(params).successful_payment?`
+`Bucky::PaymentResponse.new(params).successful_payment?`
 
 
 ### Putting it all together
@@ -159,9 +159,9 @@ class PaymentProvider
   end
 
   def create_transaction_request
-    provider = @Buckaroo::Main.new(params)
+    provider = @Bucky::Main.new(params)
     result = provider.post_transaction_request
-    Buckaroo::Response.new(result)
+    Bucky::Response.new(result)
   end
 
   private
@@ -191,7 +191,7 @@ class TransactionsController < ApplicationController
   before_filter :require_valid_signature
 
   def callback_success
-    if Buckaroo::PaymentResponse.new(params).successful_payment?
+    if Bucky::PaymentResponse.new(params).successful_payment?
       transaction = Transaction.find(params[:id])
       transaction.update_attributes!(accepted_at: DateTime.now)
 
@@ -215,7 +215,7 @@ class TransactionsController < ApplicationController
 
   # Check  the signature before every action
   def require_valid_signature
-    unless Buckaroo::Signature.valid?(params)
+    unless Bucky::Signature.valid?(params)
       render status: 422, nothing: true
     end
   end

@@ -1,6 +1,6 @@
 require 'active_support/hash_with_indifferent_access'
 
-module Buckaroo
+module Bucky
   class Signature
     attr_accessor :body
 
@@ -22,7 +22,7 @@ module Buckaroo
     private
 
     def secret_key
-      Buckaroo::Config.secret
+      Bucky::Config.secret
     end
 
     # Modifies the given hash according to the Buckaroo API documentation.
@@ -34,7 +34,7 @@ module Buckaroo
     #  Note: Sort should NOT be  done case-sensitive. Case should be preserved in  the values. Example: BRQ_AMOUNT=1.00brq_currency=EURbrq_websitekey=asdfasdfsecret
     #  3. Join all these values as a string. Do not use any whitespace.
     #  Example: BRQ_AMOUNT=1.00brq_currency=EURbrq_websitekey=asdfasdfsecretkey
-    #  4. Append the pre-shared secret key to this string. *(Buckaroo::Config.secret).
+    #  4. Append the pre-shared secret key to this string. *(Bucky::Config.secret).
     #  5. Calculate the SHA-1 hash of this string in a hexadecimal format and compare it to the signature given in the response.
 
     def body_to_string

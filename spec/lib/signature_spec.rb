@@ -1,30 +1,30 @@
 require "spec_helper"
 
-describe Buckaroo::Signature do
+describe Bucky::Signature do
   describe "#valid" do
     it "is valid when the calculated signature matches the provided signature" do
-      Buckaroo::Config.configure(secret: "very-secret")
-      calculated_signature = Buckaroo::Signature.valid?(transaction_success_response)
+      Bucky::Config.configure(secret: "very-secret")
+      calculated_signature = Bucky::Signature.valid?(transaction_success_response)
       expect(calculated_signature).to eq(true)
     end
 
     it "returns false when the calculated signature does not match the one provided" do
-      Buckaroo::Config.configure(secret: "not-so-secret")
-      calculated_signature = Buckaroo::Signature.valid?(transaction_success_response)
+      Bucky::Config.configure(secret: "not-so-secret")
+      calculated_signature = Bucky::Signature.valid?(transaction_success_response)
       expect(calculated_signature).to eq(false)
     end
   end
 
   describe "#to_s" do
     it "returns a calculated signature" do
-      Buckaroo::Config.configure(secret: "very-secret")
-      signature = Buckaroo::Signature.new(transaction_success_response).to_s
+      Bucky::Config.configure(secret: "very-secret")
+      signature = Bucky::Signature.new(transaction_success_response).to_s
       expect(signature).to eq("2b24d8f839978a15e031655b6698736be7e6c540")
     end
 
     it "returns a different signature if the secret key changes" do
-      Buckaroo::Config.configure(secret: "very-very-secret")
-      signature = Buckaroo::Signature.new(transaction_success_response).to_s
+      Bucky::Config.configure(secret: "very-very-secret")
+      signature = Bucky::Signature.new(transaction_success_response).to_s
       expect(signature).to_not eq("2b24d8f839978a15e031655b6698736be7e6c540")
     end
   end

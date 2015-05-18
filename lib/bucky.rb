@@ -1,6 +1,6 @@
 require "bucky/version"
 
-module Buckaroo
+module Bucky
   autoload :VERSION,         'bucky/version'
   autoload :Constants,       'bucky/constants'
   autoload :Main,            'bucky/main'

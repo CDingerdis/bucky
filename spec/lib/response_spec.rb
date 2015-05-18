@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Buckaroo::Response do
-  let(:successful_response) { Buckaroo::Response.new(raw_response) }
-  let(:failed_response) {  Buckaroo::Response.new(failed_raw_response) }
+describe Bucky::Response do
+  let(:successful_response) { Bucky::Response.new(raw_response) }
+  let(:failed_response) {  Bucky::Response.new(failed_raw_response) }
 
   describe "#redirect_url" do
     it 'has a redirect_url' do

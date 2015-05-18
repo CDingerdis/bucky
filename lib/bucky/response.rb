@@ -1,6 +1,6 @@
 require 'addressable/uri'
 
-module Buckaroo
+module Bucky
   class Response
 
     def initialize(raw_response)
@@ -16,7 +16,7 @@ module Buckaroo
     end
 
     def human_readable_status
-      Buckaroo::Constants::PAYMENT_STATUS_CODES[status.to_s]
+      Bucky::Constants::PAYMENT_STATUS_CODES[status.to_s]
     end
 
     private

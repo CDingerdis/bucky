@@ -1,15 +1,15 @@
 require "spec_helper"
 
-describe Buckaroo::Main do
+describe Bucky::Main do
   before do
-    Buckaroo::Config.configure(endpoint: "https://testcheckout.buckaroo.nl/nvp/",
+    Bucky::Config.configure(endpoint: "https://testcheckout.buckaroo.nl/nvp/",
                                secret: "very-secret",
                                websitekey: "very-secure")
   end
 
   describe "#params_with_signature" do
     it "merges the given keys with the keys provided in the config" do
-      main = Buckaroo::Main.new({brq_amount: 10.0})
+      main = Bucky::Main.new({brq_amount: 10.0})
       expect(main.params_with_signature.keys)
         .to eq([:brq_websitekey, :brq_culture, :brq_amount, :brq_signature])
     end
@@ -19,7 +19,7 @@ describe Buckaroo::Main do
     it "performs a transactions request " do
       allow(HTTParty).to receive(:post).and_return(raw_response)
 
-      main = Buckaroo::Main.new(transaction_request_parameters)
+      main = Bucky::Main.new(transaction_request_parameters)
       raw_result = main.post_transaction_request
 
       expect(HTTParty).to have_received(:post)

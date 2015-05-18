@@ -3,7 +3,7 @@ class TransactionsController < ApplicationController
   before_filter :require_signed_params
 
   def callback_success
-    if Buckaroo::PaymentResponse.new(params).successful_payment?
+    if Bucky::PaymentResponse.new(params).successful_payment?
       #Your code here
       redirect_to root_path
     end
@@ -24,7 +24,7 @@ class TransactionsController < ApplicationController
   private
 
   def require_signed_params
-    unless Buckaroo::Signature.valid?(params)
+    unless Bucky::Signature.valid?(params)
       render status: 422, nothing: true
     end
   end

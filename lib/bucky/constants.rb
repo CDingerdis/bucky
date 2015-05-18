@@ -1,4 +1,4 @@
-module Buckaroo
+module Bucky
   module Constants
 
     PAYMENT_STATUS_CODES = {

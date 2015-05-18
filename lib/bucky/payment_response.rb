@@ -1,4 +1,4 @@
-module Buckaroo
+module Bucky
   class PaymentResponse
 
     def initialize(params = {})
